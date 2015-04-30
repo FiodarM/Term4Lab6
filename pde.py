@@ -1,10 +1,44 @@
 __author__ = 'fiodar'
 
 import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 
-def laplace_solve2d(x, y, phi, psi, tolerance):
+def dirichlet_problem_2d(x_bounds, y_bounds, conditions_x, conditions_y, n_x=50, n_y=50, tol=0.01):
 
+    x = np.linspace(x_bounds[0], x_bounds[1], n_x)
+    y = np.linspace(y_bounds[0], y_bounds[1], n_y)
+    phi = conditions_x[0](x), conditions_x[1](x)
+    psi = conditions_y[0](y), conditions_y[1](y)
+    u = np.zeros((len(x), len(y)))
+    u[0] = conditions_y[0](y)
+    u[-1] = conditions_y[1](y)
+    u = u.transpose()
+    u[0] = conditions_x[0](x)
+    u[-1] = conditions_x[1](x)
+    u = u.transpose()
 
+    iterations = 0
+    while True:
+        iterations +=1
+        u0 = np.copy(u)
+        for i, item in enumerate(u[1:-1]):
+            for j in xrange(1, len(item)-1):
+                u[i+1][j] = 0.25 * (u[i][j]+u[i+2][j]+u[i+1][j+1]+u[i+1][j-1])
+        if np.max(np.abs(u-u0))/np.mean(np.abs(u)) <= tol:
+            print iterations
+            break
 
     return u
+
+n = 30
+u = dirichlet_problem_2d((0, 1), (0, 1), (lambda y: y, lambda y: 1-y), (lambda x: x, lambda x: 1-x), n, n, 0.001)
+fig = plt.figure('')
+ax = fig.gca(projection='3d')
+x, y = np.linspace(0, 1, n), np.linspace(0, 1, n)
+x, y = np.meshgrid(x, y)
+surf = ax.plot_surface(x, y, u)
+plt.show()
+
