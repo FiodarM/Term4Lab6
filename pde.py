@@ -22,7 +22,7 @@ def dirichlet_problem_2d(x_bounds, y_bounds, conditions_x, conditions_y, n_x=50,
 
     iterations = 0
     while True:
-        iterations +=1
+        iterations += 1
         u0 = np.copy(u)
         for i, item in enumerate(u[1:-1]):
             for j in xrange(1, len(item)-1):
@@ -33,12 +33,4 @@ def dirichlet_problem_2d(x_bounds, y_bounds, conditions_x, conditions_y, n_x=50,
 
     return u
 
-n = 30
-u = dirichlet_problem_2d((0, 1), (0, 1), (lambda y: y, lambda y: 1-y), (lambda x: x, lambda x: 1-x), n, n, 0.001)
-fig = plt.figure('')
-ax = fig.gca(projection='3d')
-x, y = np.linspace(0, 1, n), np.linspace(0, 1, n)
-x, y = np.meshgrid(x, y)
-surf = ax.plot_surface(x, y, u)
-plt.show()
 
