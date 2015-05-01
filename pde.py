@@ -1,9 +1,6 @@
 __author__ = 'fiodar'
 
 import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 
 
 def dirichlet_problem_2d(x_bounds, y_bounds, conditions_x, conditions_y, n_x=50, n_y=50, tol=0.01):
@@ -28,7 +25,7 @@ def dirichlet_problem_2d(x_bounds, y_bounds, conditions_x, conditions_y, n_x=50,
             for j in xrange(1, len(item)-1):
                 u[i+1][j] = 0.25 * (u[i][j]+u[i+2][j]+u[i+1][j+1]+u[i+1][j-1])
         if np.max(np.abs(u-u0))/np.mean(np.abs(u)) <= tol:
-            print iterations
+            print 'Number of iterations:', iterations
             break
 
     return u
