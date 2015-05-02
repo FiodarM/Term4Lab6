@@ -9,7 +9,7 @@ from mpl_toolkits.mplot3d import Axes3D
 
 phi = lambda y: exp(2*y), lambda y: exp(2*y-1)
 psi = lambda x: exp(-x), lambda x: exp(2-x)
-n = 20
+n = 10
 x_bounds = 0, 1
 y_bounds = 0, 1
 u = dirichlet_problem_2d(x_bounds, y_bounds, phi, psi, n, n, 0.01)
